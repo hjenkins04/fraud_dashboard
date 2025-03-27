@@ -50,17 +50,10 @@ export default function DashboardPage() {
       <div className="flex-1 space-y-4 p-8 pt-6">
         <div className="flex items-center justify-between space-y-2">
           <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-          <div className="flex items-center space-x-2">
-            <Button>
-              <Upload className="mr-2 h-4 w-4" />
-              Upload Data
-            </Button>
-          </div>
         </div>
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
             <TabsTrigger value="upload">Upload</TabsTrigger>
             <TabsTrigger value="results">Results</TabsTrigger>
           </TabsList>
@@ -137,24 +130,6 @@ export default function DashboardPage() {
                 </CardFooter>
               </Card>
             </div>
-          </TabsContent>
-
-          {/* Analytics Tab */}
-          <TabsContent value="analytics" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Cluster Analysis</CardTitle>
-                <CardDescription>Visualization of transaction clusters using K-means algorithm</CardDescription>
-              </CardHeader>
-              <CardContent className="h-[400px] flex items-center justify-center">
-                <div className="text-center text-muted-foreground">
-                  <p>Cluster visualization will appear here</p>
-                  <p className="text-sm mt-2">
-                    (This would display a scatter plot of transactions with clusters highlighted)
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
           </TabsContent>
 
           {/* Upload Tab with ProcessSection */}

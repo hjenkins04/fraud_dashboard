@@ -74,7 +74,7 @@ export function Overview() {
         <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
         <Tooltip />
         <Bar dataKey="total" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} name="Total Transactions" />
-        <Bar dataKey="fraudulent" fill="hsl(var(--destructive))" radius={[4, 4, 0, 0]} name="Fraudulent Transactions" />
+        <Bar dataKey="fraudulent" fill="red" radius={[4, 4, 0, 0]} name="Fraudulent Transactions" />
       </BarChart>
     </ResponsiveContainer>
   )

@@ -1,48 +1,59 @@
 "use client"
 
-import { useState } from "react"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
+import { useEffect, useState } from "react"
+import Papa from "papaparse"
+import { TransactionForm } from "@/components/transaction-form"
+import { Transaction } from "@/types/transaction"
+import SingleResultsModal from "@/components/single-results-modal"
 
 export function Single() {
-  const [formData, setFormData] = useState({
-    trans_date_trans_time: "",
-    cc_num: "",
-    merchant: "",
-    category: "",
-    amt: "",
-    first: "",
-    last: "",
-  })
+  const [csvData, setCsvData] = useState<Transaction[]>([])
+  const [selectedTransaction, setSelectedTransaction] = useState<Partial<Transaction> | null>(null)
+  const [showModal, setShowModal] = useState(false)
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+  // Load sample CSV on mount
+  useEffect(() => {
+    fetch("/fraudVal.csv")
+      .then((res) => res.text())
+      .then((text) => {
+        const parsed = Papa.parse<Transaction>(text, {
+          header: true,
+          skipEmptyLines: true,
+        }).data
+        setCsvData(parsed)
+      })
+  }, [])
+
+  // Function to handle form submission
+  const handleFormSubmit = (data: Partial<Transaction>) => {
+    setSelectedTransaction(data)
+    setShowModal(true)
   }
 
-  const handleSubmit = () => {
-    // Add logic to validate and process the single entry
-    console.log("Submitting single transaction:", formData)
-    alert("Submitted for processing (console log)")
+  // Custom generate function that sets form values (injected into TransactionForm)
+  const handleGenerateFromCSV = (setValue: (field: keyof Transaction, value: any) => void) => {
+    const random = csvData[Math.floor(Math.random() * csvData.length)]
+    if (random) {
+      Object.entries(random).forEach(([key, value]) => {
+        setValue(key as keyof Transaction, value)
+      })
+    }
   }
 
   return (
-    <form className="space-y-4">
-      {Object.keys(formData).map((field) => (
-        <div key={field}>
-          <Label htmlFor={field}>{field.replace(/_/g, " ")}</Label>
-          <Input
-            id={field}
-            name={field}
-            value={(formData as any)[field]}
-            onChange={handleChange}
-            required
-          />
-        </div>
-      ))}
-      <Button type="button" onClick={handleSubmit}>
-        Submit Transaction
-      </Button>
-    </form>
+    <>
+      <TransactionForm
+        onSubmit={handleFormSubmit}
+        onGenerateFromCSV={handleGenerateFromCSV}
+      />
+
+      {selectedTransaction && (
+        <SingleResultsModal
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+          transaction={selectedTransaction}
+        />
+      )}
+    </>
   )
 }

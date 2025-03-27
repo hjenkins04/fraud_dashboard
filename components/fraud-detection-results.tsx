@@ -21,7 +21,6 @@ export function FraudDetectionResults() {
       merchant: "Best Buy",
       cardLast4: "5678",
       location: "New York, NY",
-      cluster: 2,
       score: 0.92,
       status: "High Risk",
       features: ["Unusual location", "High amount", "Frequency anomaly"],
@@ -33,7 +32,6 @@ export function FraudDetectionResults() {
       merchant: "Apple",
       cardLast4: "3456",
       location: "Online",
-      cluster: 2,
       score: 0.87,
       status: "High Risk",
       features: ["Multiple transactions", "Unusual merchant"],
@@ -45,7 +43,6 @@ export function FraudDetectionResults() {
       merchant: "Electronics Store",
       cardLast4: "7123",
       location: "Miami, FL",
-      cluster: 2,
       score: 0.95,
       status: "High Risk",
       features: ["Unusual location", "High amount", "Time anomaly"],
@@ -57,7 +54,6 @@ export function FraudDetectionResults() {
       merchant: "Gas Station",
       cardLast4: "9234",
       location: "Chicago, IL",
-      cluster: 1,
       score: 0.65,
       status: "Medium Risk",
       features: ["Unusual merchant category"],
@@ -69,7 +65,6 @@ export function FraudDetectionResults() {
       merchant: "Unknown Vendor",
       cardLast4: "8345",
       location: "Online",
-      cluster: 1,
       score: 0.72,
       status: "Medium Risk",
       features: ["Unrecognized merchant"],
@@ -138,7 +133,6 @@ export function FraudDetectionResults() {
                   <TableCell>{result.timestamp}</TableCell>
                   <TableCell>{result.amount}</TableCell>
                   <TableCell>{result.merchant}</TableCell>
-                  <TableCell>Cluster {result.cluster}</TableCell>
                   <TableCell>{result.score.toFixed(2)}</TableCell>
                   <TableCell>
                     <Badge
