@@ -22,7 +22,7 @@ export async function processTransactions(transactions: Transaction[] = []) {
   }
 
   try {
-    console.log("📦 Sending request to Lambda with payload:")
+    console.log("Sending request to Lambda with payload:")
     console.log(JSON.stringify(lambdaInput, null, 2))
 
     const response = await fetch(process.env.LAMBDA_INVOKE_URL as string, {
@@ -33,12 +33,12 @@ export async function processTransactions(transactions: Transaction[] = []) {
       body: JSON.stringify(lambdaInput),
     })
 
-    console.log("🔄 Lambda response status:", response.status)
-    console.log("🔄 Lambda response headers:", [...response.headers.entries()])
+    console.log("Lambda response status:", response.status)
+    console.log("Lambda response headers:", [...response.headers.entries()])
 
     const json = await response.json()
 
-    console.log("🔍 Lambda response raw body:", JSON.stringify(json))
+    console.log("Lambda response raw body:", JSON.stringify(json))
 
     const predictionList = json?.predictions?.predictions || []
     const threshold = 3.0
@@ -55,7 +55,7 @@ export async function processTransactions(transactions: Transaction[] = []) {
 
     return { processedTransactions: enriched }
   } catch (error: any) {
-    console.error("❌ Error calling Lambda:", error)
+    console.error("Error calling Lambda:", error)
     throw new Error(`Lambda invocation failed: ${error.message}`)
   }
 }
