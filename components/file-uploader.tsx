@@ -133,6 +133,7 @@ export function FileUploader() {
 
     try {
       const { processedTransactions } = await processTransactions(parsedData)
+      console.log("processedTransactions", processedTransactions)
       setProgress(80)
       setTransactions(processedTransactions)
       setProcessedData(true)

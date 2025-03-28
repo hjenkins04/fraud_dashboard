@@ -119,7 +119,6 @@ export function FraudDetectionResults() {
               <TableHead>Date & Time</TableHead>
               <TableHead>Amount</TableHead>
               <TableHead>Merchant</TableHead>
-              <TableHead>Cluster</TableHead>
               <TableHead>Risk Score</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Features</TableHead>

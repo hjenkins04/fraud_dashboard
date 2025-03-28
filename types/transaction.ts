@@ -21,5 +21,9 @@ export type Transaction = {
     dob?: string
     unix_time?: string
     is_fraud?: string | number
+    distance?: number
+    centroid?: number
+    is_fraud_inference?: number
   }
+  
   

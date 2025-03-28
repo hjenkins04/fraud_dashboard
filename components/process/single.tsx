@@ -5,13 +5,16 @@ import Papa from "papaparse"
 import { TransactionForm } from "@/components/transaction-form"
 import { Transaction } from "@/types/transaction"
 import SingleResultsModal from "@/components/single-results-modal"
+import { processTransactions } from "@/lib/process-transactions"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { Loader2 } from "lucide-react"
 
 export function Single() {
   const [csvData, setCsvData] = useState<Transaction[]>([])
   const [selectedTransaction, setSelectedTransaction] = useState<Partial<Transaction> | null>(null)
   const [showModal, setShowModal] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
-  // Load sample CSV on mount
   useEffect(() => {
     fetch("/fraudVal.csv")
       .then((res) => res.text())
@@ -24,13 +27,25 @@ export function Single() {
       })
   }, [])
 
-  // Function to handle form submission
-  const handleFormSubmit = (data: Partial<Transaction>) => {
-    setSelectedTransaction(data)
-    setShowModal(true)
+  const handleFormSubmit = async (data: Partial<Transaction>) => {
+    setIsLoading(true)
+    try {
+      const response = await processTransactions([data as Transaction])
+      const enriched = response.processedTransactions?.[0] ?? {
+        ...data,
+        is_fraud_inference: -1,
+        distance: 0,
+        closest_cluster: -1,
+      }
+      setSelectedTransaction(enriched)
+      setShowModal(true)
+    } catch (err) {
+      console.error("❌ Error running inference:", err)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  // Custom generate function that sets form values (injected into TransactionForm)
   const handleGenerateFromCSV = (setValue: (field: keyof Transaction, value: any) => void) => {
     const random = csvData[Math.floor(Math.random() * csvData.length)]
     if (random) {
@@ -46,6 +61,14 @@ export function Single() {
         onSubmit={handleFormSubmit}
         onGenerateFromCSV={handleGenerateFromCSV}
       />
+
+      {/* Loader Dialog */}
+      <Dialog open={isLoading}>
+        <DialogContent className="flex flex-col items-center justify-center space-y-4 w-[300px]">
+          <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+          <p className="text-sm text-muted-foreground">Running fraud detection...</p>
+        </DialogContent>
+      </Dialog>
 
       {selectedTransaction && (
         <SingleResultsModal

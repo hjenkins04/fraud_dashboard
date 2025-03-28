@@ -1,31 +1,7 @@
 "use client"
 
 import { createContext, useContext, useState, type ReactNode } from "react"
-
-export interface Transaction {
-  trans_date_trans_time: string
-  cc_num: string
-  merchant: string
-  category: string
-  amt: number
-  first: string
-  last: string
-  gender: string
-  street: string
-  city: string
-  state: string
-  zip: string
-  lat: number
-  long: number
-  city_pop: number
-  job: string
-  dob: string
-  trans_num: string
-  unix_time: number
-  merch_lat: number
-  merch_long: number
-  is_fraud: number
-}
+import { Transaction } from "@/types/transaction"
 
 interface TransactionContextType {
   transactions: Transaction[]
