@@ -158,7 +158,7 @@ const formSchema = z.object({
 
 interface TransactionFormProps {
     onSubmit: (data: Partial<Transaction>) => void
-    onGenerateFromCSV?: (setValue: (field: keyof Transaction, value: any) => void) => void
+    onGenerateFromCSV?: (setValue: (field: keyof z.infer<typeof formSchema>, value: any) => void) => void
   }
   
 export function TransactionForm({ onSubmit, onGenerateFromCSV }: TransactionFormProps) {
@@ -190,7 +190,7 @@ export function TransactionForm({ onSubmit, onGenerateFromCSV }: TransactionForm
       city: "",
       dob: "",
       unix_time: "",
-      is_fraud: "0",
+      is_fraud: "0"
     },
   })
 
