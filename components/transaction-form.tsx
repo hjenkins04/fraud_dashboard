@@ -90,7 +90,7 @@ const STATES = [
 ]
 
 // Form validation schema
-const formSchema = z.object({
+export const formSchema = z.object({
   // Transaction Details
   trans_date_trans_time: z.string().min(1, "Transaction date is required"),
   trans_num: z.string().min(8, "Transaction number must be at least 8 characters"),

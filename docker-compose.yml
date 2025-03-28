@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  fraud-dashboard:
+    image: fraud-dashboard-app
+    container_name: fraud-dashboard
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_LAMBDA_URL=https://tmg2u44g427e6hl5rzopwi6suu0ednbp.lambda-url.us-east-1.on.aws/
+    restart: unless-stopped

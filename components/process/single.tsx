@@ -8,6 +8,11 @@ import SingleResultsModal from "@/components/single-results-modal"
 import { processTransactions } from "@/lib/process-transactions"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Loader2 } from "lucide-react"
+import { UseFormSetValue } from "react-hook-form"
+import { formSchema } from "@/components/transaction-form"
+import { z } from "zod"
+
+type FormValues = z.infer<typeof formSchema>
 
 export function Single() {
   const [csvData, setCsvData] = useState<Transaction[]>([])
@@ -40,20 +45,33 @@ export function Single() {
       setSelectedTransaction(enriched)
       setShowModal(true)
     } catch (err) {
-      console.error("❌ Error running inference:", err)
+      console.error("Error running inference:", err)
     } finally {
       setIsLoading(false)
     }
   }
 
-  const handleGenerateFromCSV = (setValue: (field: keyof Transaction, value: any) => void) => {
+  const handleGenerateFromCSV = (
+    setValue: UseFormSetValue<FormValues>
+  ) => {
     const random = csvData[Math.floor(Math.random() * csvData.length)]
     if (random) {
-      Object.entries(random).forEach(([key, value]) => {
-        setValue(key as keyof Transaction, value)
+      const allowedKeys: (keyof FormValues)[] = [
+        "trans_date_trans_time", "trans_num", "amt", "cc_num",
+        "merchant", "category", "merch_lat", "merch_long",
+        "zip", "city", "city_pop", "state", "lat", "long",
+        "first", "last", "job", "gender", "street", "dob",
+        "unix_time", "is_fraud"
+      ]
+      allowedKeys.forEach((key) => {
+        const value = random[key as keyof Transaction]
+        if (value !== undefined) {
+          setValue(key, value)
+        }
       })
     }
   }
+  
 
   return (
     <>
